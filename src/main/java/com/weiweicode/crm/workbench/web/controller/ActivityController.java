@@ -29,7 +29,8 @@ import java.util.Map;
  */
 @WebServlet({"/workbench/activity/getUserList.do","/workbench/activity/save.do",
         "/workbench/activity/pageList.do","/workbench/activity/delete.do",
-        "/workbench/activity/getUserListAndActivity.do","/workbench/activity/update.do"})
+        "/workbench/activity/getUserListAndActivity.do","/workbench/activity/update.do",
+        "/workbench/activity/detail.do"})
 public class ActivityController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -51,7 +52,15 @@ public class ActivityController extends HttpServlet {
             getUserListAndActivity(request,response);
         } else if ("/workbench/activity/update.do".equals(servletPath)) {
             update(request,response);
+        } else if ("/workbench/activity/detail.do".equals(servletPath)) {
+            detail(request,response);
         }
+    }
+
+    private void detail(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println();
+
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) {

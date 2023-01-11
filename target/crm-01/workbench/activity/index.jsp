@@ -83,6 +83,19 @@
 				 	*/
 					if (data.success){
 
+						/*
+						* $("#activityPage").bs_pagination('getOption', 'currentPage'):
+						* 		操作后停留在当前页
+						*
+						* $("#activityPage").bs_pagination('getOption', 'rowsPerPage')
+						* 		操作后维持已经设置好的每页展现的记录数
+						*
+						* 这两个参数不需要我们进行任何的修改操作
+						* 	直接使用即可
+						* */
+						//做完添加操作后，应该回到第一页，维持每页展现的记录数
+						pageList(1, $("#activityPage").bs_pagination('getOption', 'rowsPerPage'))
+
 						//清空添加活动模态窗口的数据
 						//提交表单
 						//$("#activityAddForm").submit();
@@ -180,7 +193,11 @@
                                 data  {success:true}
                              */
 							if (data.success){
-								pageList(1,3)
+								// pageList(1,3)
+
+								//删除成功后，应该回到第一页，并保持记录条数
+								pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
 							} else {
 								alert("删除市场活动失败")
 							}
@@ -243,6 +260,50 @@
 			})
 		})
 
+		//为更新按钮绑定事件，执行市场活动的修改操作
+		/*
+			在实际项目开发中，一定是按照先做添加，再做修改的这种顺序
+			所以，为了节省开发时间，修改操作一般都是copy添加操作
+		 */
+		$("#updateBtn").click(function (){
+
+			$.ajax({
+				url : "workbench/activity/update.do",
+				data : {
+					"id" : $.trim($("#edit-id").val()),
+					"owner" : $.trim($("#edit-owner").val()),
+					"name" : $.trim($("#edit-name").val()),
+					"startDate" : $.trim($("#edit-startDate").val()),
+					"endDate" : $.trim($("#edit-endDate").val()),
+					"cost" : $.trim($("#edit-cost").val()),
+					"description" : $.trim($("#edit-description").val())
+				},
+				type : "post",
+				dataType : "json",
+				success : function (data) {
+					/*
+						data
+							{"success":true/false}
+				 	*/
+					if (data.success){
+						//修改成功,刷新页面
+						// pageList(1,3)
+
+						 /*
+							修改操作后，应该维持在当前页，维持每页展现的记录数
+						 */
+						pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+								,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
+						//关闭模态窗口
+						$("#editActivityModal").modal("hide")
+					} else {
+						alert("修改市场活动失败")
+					}
+				}
+			})
+		})
+
 	});
 
 	/*
@@ -300,7 +361,7 @@
 				$.each(data.dataList, function (i,n){
 					html += '<tr class="active">'
 					html += '<td><input type="checkbox" name="xz" value="'+ n.id +'"/></td>'
-					html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">'+ n.name +'</a></td>'
+					html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.do?id='+ n.id +'\';">'+ n.name +'</a></td>'
 					html += '<td>'+ n.owner +'</td>'
 					html += '<td>'+ n.startDate +'</td>'
 					html += '<td>'+ n.endDate +'</td>'
@@ -414,7 +475,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button type="button" class="btn btn-primary" id="updateBtn">更新</button>
 				</div>
 			</div>
 		</div>
