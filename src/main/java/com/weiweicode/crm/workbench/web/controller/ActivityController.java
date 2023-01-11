@@ -30,7 +30,8 @@ import java.util.UUID;
  * @Date 2023/1/5 23:19
  * @Version 1.0
  */
-@WebServlet({"/workbench/activity/getUserList.do","/workbench/activity/save.do","/workbench/activity/pageList.do"})
+@WebServlet({"/workbench/activity/getUserList.do","/workbench/activity/save.do",
+        "/workbench/activity/pageList.do","/workbench/activity/delete.do"})
 public class ActivityController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +47,16 @@ public class ActivityController extends HttpServlet {
             save(request,response);
         } else if ("/workbench/activity/pageList.do".equals(servletPath)){
             pageList(request,response);
+        } else if ("/workbench/activity/delete.do".equals(servletPath)) {
+            delete(request,response);
         }
+    }
+
+    private void delete(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("进入删除市场活动信息的操作");
+
+
     }
 
     private void pageList(HttpServletRequest request, HttpServletResponse response) {
