@@ -204,6 +204,9 @@
 	 */
 	function pageList(pageNo, pageSize){
 
+		//将全选的复选框的√干掉
+		$("#qx").prop("checked",false);
+
 		//查询前，将隐藏域中保存的信息取出来，重新赋予到搜索框中
 		$("#search-name").val($.trim($("#hidden-name").val()));
 		$("#search-owner").val($.trim($("#hidden-owner").val()));

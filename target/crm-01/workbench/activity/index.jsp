@@ -150,7 +150,42 @@
 			$("#qx").prop("checked",$("input[name=xz]").length == $("input[name=xz]:checked").length)
 		})
 
-		/*
+		//为删除按钮绑定事件
+		$("#deleteBtn").click(function (){
+
+			//找到复选框所有选中的复选框jquery对象
+			var $xz = $("input[name=xz]:checked")
+			if ($xz.length == 0){
+				alert("请选择需要删除的记录")
+			} else {
+
+				//拼接参数
+				var param = ""
+
+				for (var i = 0; i < $xz.length; i++) {
+					param += "id=" + $($xz[i]).val() + "&"
+				}
+				param = param.substr(param.length-1,1)
+				alert(param)
+
+				$.ajax({
+					url : "workbench/activity/delete.do",
+					data : {
+
+					},
+					type : "get",
+					dataType : "json",
+					success : function (data) {
+
+
+					}
+				})
+			}
+		})
+
+	});
+
+	/*
 		对于所有的关系型数据库，做前端的分页相关操作的基础组件
 		就是pageNo和pageSize
 		pageNo:页码
@@ -167,79 +202,82 @@
 
 		以上为pageList方法制定了六个入口，也就是说，在以上6个操作执行完毕后，我们必须要调用pageList方法，刷新市场活动信息列表
 	 */
-		function pageList(pageNo, pageSize){
+	function pageList(pageNo, pageSize){
 
-			//查询前，将隐藏域中保存的信息取出来，重新赋予到搜索框中
-			$("#search-name").val($.trim($("#hidden-name").val()));
-			$("#search-owner").val($.trim($("#hidden-owner").val()));
-			$("#search-startDate").val($.trim($("#hidden-startDate").val()));
-			$("#search-endDate").val($.trim($("#hidden-endDate").val()));
+		//将全选的复选框的√干掉
+		$("#qx").prop("checked",false);
 
-			$.ajax({
-				url : "workbench/activity/pageList.do",
-				data : {
-					"pageNo" : pageNo,
-					"pageSize" : pageSize,
-					"name" : $.trim($("#search-name").val()),
-					"owner" : $.trim($("#search-owner").val()),
-					"startDate" : $.trim($("#search-startDate").val()),
-					"endDate" : $.trim($("#search-endDate").val())
-				},
-				type : "get",
-				dataType : "json",
-				success : function (data) {
-					/*
-						data
-							我们需要的：市场活动信息列表
-							[{市场活动1},{2},{3}] List<Activity> aList
-							一会分页插件需要的：查询出来的总记录数
-							{"total":100} int total
+		//查询前，将隐藏域中保存的信息取出来，重新赋予到搜索框中
+		$("#search-name").val($.trim($("#hidden-name").val()));
+		$("#search-owner").val($.trim($("#hidden-owner").val()));
+		$("#search-startDate").val($.trim($("#hidden-startDate").val()));
+		$("#search-endDate").val($.trim($("#hidden-endDate").val()));
 
-							{"total":100,"dataList":[{市场活动1},{2},{3}]}
-					 */
-					var html = ""
-					//每一个n就是一个市场活动对象
-					$.each(data.dataList, function (i,n){
-						html += '<tr class="active">'
-						html += '<td><input type="checkbox" name="xz" value="'+ n.id +'"/></td>'
-						html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">'+ n.name +'</a></td>'
-						html += '<td>'+ n.owner +'</td>'
-						html += '<td>'+ n.startDate +'</td>'
-						html += '<td>'+ n.endDate +'</td>'
-						html += '</tr>'
-					})
-					$("#activityBody").html(html)
+		$.ajax({
+			url : "workbench/activity/pageList.do",
+			data : {
+				"pageNo" : pageNo,
+				"pageSize" : pageSize,
+				"name" : $.trim($("#search-name").val()),
+				"owner" : $.trim($("#search-owner").val()),
+				"startDate" : $.trim($("#search-startDate").val()),
+				"endDate" : $.trim($("#search-endDate").val())
+			},
+			type : "get",
+			dataType : "json",
+			success : function (data) {
+				/*
+                    data
+                        我们需要的：市场活动信息列表
+                        [{市场活动1},{2},{3}] List<Activity> aList
+                        一会分页插件需要的：查询出来的总记录数
+                        {"total":100} int total
 
-					//计算总页数
-					totalPages = data.total%pageSize==0?data.total/pageSize:parseInt(data.total/pageSize)+1;
+                        {"total":100,"dataList":[{市场活动1},{2},{3}]}
+                 */
+				var html = ""
+				//每一个n就是一个市场活动对象
+				$.each(data.dataList, function (i,n){
+					html += '<tr class="active">'
+					html += '<td><input type="checkbox" name="xz" value="'+ n.id +'"/></td>'
+					html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">'+ n.name +'</a></td>'
+					html += '<td>'+ n.owner +'</td>'
+					html += '<td>'+ n.startDate +'</td>'
+					html += '<td>'+ n.endDate +'</td>'
+					html += '</tr>'
+				})
+				$("#activityBody").html(html)
 
-					//数据处理完毕后，结合分页插件对前端展现分页信息
-					$("#activityPage").bs_pagination({
-						currentPage: pageNo, // 页码
-						rowsPerPage: pageSize, // 每页显示的记录条数
-						maxRowsPerPage: 20, // 每页最多显示的记录条数
-						totalPages: totalPages, // 总页数
-						totalRows: data.total, // 总记录条数
+				//计算总页数
+				totalPages = data.total%pageSize==0?data.total/pageSize:parseInt(data.total/pageSize)+1;
 
-						visiblePageLinks: 3, // 显示几个卡片
+				//数据处理完毕后，结合分页插件对前端展现分页信息
+				$("#activityPage").bs_pagination({
+					currentPage: pageNo, // 页码
+					rowsPerPage: pageSize, // 每页显示的记录条数
+					maxRowsPerPage: 20, // 每页最多显示的记录条数
+					totalPages: totalPages, // 总页数
+					totalRows: data.total, // 总记录条数
 
-						showGoToPage: true,
-						showRowsPerPage: true,
-						showRowsInfo: true,
-						showRowsDefaultInfo: true,
+					visiblePageLinks: 3, // 显示几个卡片
 
-						//该回调函数时在，点击分页组件的时候触发的
-						onChangePage : function(event, data){
-							pageList(data.currentPage , data.rowsPerPage);
-						}
-					});
+					showGoToPage: true,
+					showRowsPerPage: true,
+					showRowsInfo: true,
+					showRowsDefaultInfo: true,
 
-				}
-			})
-		}
+					//该回调函数时在，点击分页组件的时候触发的
+					onChangePage : function(event, data){
+						//翻页时将全选框取消
+						$("#qx").prop("checked",false)
+						pageList(data.currentPage , data.rowsPerPage);
+					}
+				});
 
-	});
-	
+			}
+		})
+	}
+
 </script>
 </head>
 <body>
@@ -454,7 +492,7 @@
 				  <%--<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>--%>
 					<button type="button" class="btn btn-primary" id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 					<button type="button" class="btn btn-default" id="editBtn"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" class="btn btn-danger" id="deleteBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
 			</div>
