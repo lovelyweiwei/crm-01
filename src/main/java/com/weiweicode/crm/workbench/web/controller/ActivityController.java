@@ -16,14 +16,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import sun.swing.StringUIClientPropertyKey;
 
-import javax.xml.ws.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @Author weiwei
@@ -32,7 +29,7 @@ import java.util.UUID;
  */
 @WebServlet({"/workbench/activity/getUserList.do","/workbench/activity/save.do",
         "/workbench/activity/pageList.do","/workbench/activity/delete.do",
-        "/workbench/activity/getUserListAndActivity.do"})
+        "/workbench/activity/getUserListAndActivity.do","/workbench/activity/update.do"})
 public class ActivityController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +49,43 @@ public class ActivityController extends HttpServlet {
             delete(request,response);
         } else if ("/workbench/activity/getUserListAndActivity.do".equals(servletPath)) {
             getUserListAndActivity(request,response);
+        } else if ("/workbench/activity/update.do".equals(servletPath)) {
+            update(request,response);
         }
+    }
+
+    private void update(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("执行市场活动修改的操作");
+
+        String id = request.getParameter("id");
+        String owner = request.getParameter("owner");
+        String name = request.getParameter("name");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String cost = request.getParameter("cost");
+        String description = request.getParameter("description");
+        //修改时间，当前系统时间
+        String editTime = DateTimeUtil.getSysTime();
+        //修改人，当前登录用户
+        String editBy = ((User) request.getSession().getAttribute("user")).getName();
+
+        Activity activity = new Activity();
+        activity.setId(id);;
+        activity.setOwner(owner);
+        activity.setName(name);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        activity.setCost(cost);
+        activity.setDescription(description);
+        activity.setEditTime(editTime);
+        activity.setEditBy(editBy);
+
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        boolean flag = activityService.update(activity);
+
+        PrintJson.printJsonFlag(response, flag);
     }
 
     private void getUserListAndActivity(HttpServletRequest request, HttpServletResponse response) {

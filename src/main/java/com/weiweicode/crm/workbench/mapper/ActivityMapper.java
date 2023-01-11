@@ -21,4 +21,6 @@ public interface ActivityMapper {
     int delete(@Param("ids") String[] ids);
 
     Activity getById(String id);
+
+    int update(Activity activity);
 }
