@@ -1,5 +1,7 @@
 package com.weiweicode.crm.workbench.service.impl;
 
+import com.weiweicode.crm.settings.mapper.UserMapper;
+import com.weiweicode.crm.settings.pojo.User;
 import com.weiweicode.crm.utils.SqlSessionUtil;
 import com.weiweicode.crm.vo.PaginationVO;
 import com.weiweicode.crm.workbench.mapper.ActivityMapper;
@@ -7,6 +9,7 @@ import com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.weiweicode.crm.workbench.pojo.Activity;
 import com.weiweicode.crm.workbench.service.ActivityService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +22,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     private ActivityMapper activityMapper = SqlSessionUtil.getSqlSession().getMapper(ActivityMapper.class);
     private ActivityRemarkMapper activityRemarkMapper = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkMapper.class);
+    private UserMapper userMapper = SqlSessionUtil.getSqlSession().getMapper(UserMapper.class);
 
     @Override
     public boolean save(Activity activity) {
@@ -72,5 +76,21 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         return flag;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndActivity(String id) {
+
+        //获取UserList
+        List<User> list = userMapper.getUserList();
+
+        //获取Activity
+        Activity activity = activityMapper.getById(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("uList",list);
+        map.put("activity",activity);
+
+        return map;
     }
 }

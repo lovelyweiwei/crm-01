@@ -31,7 +31,8 @@ import java.util.UUID;
  * @Version 1.0
  */
 @WebServlet({"/workbench/activity/getUserList.do","/workbench/activity/save.do",
-        "/workbench/activity/pageList.do","/workbench/activity/delete.do"})
+        "/workbench/activity/pageList.do","/workbench/activity/delete.do",
+        "/workbench/activity/getUserListAndActivity.do"})
 public class ActivityController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -49,7 +50,28 @@ public class ActivityController extends HttpServlet {
             pageList(request,response);
         } else if ("/workbench/activity/delete.do".equals(servletPath)) {
             delete(request,response);
+        } else if ("/workbench/activity/getUserListAndActivity.do".equals(servletPath)) {
+            getUserListAndActivity(request,response);
         }
+    }
+
+    private void getUserListAndActivity(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("进入查询用户信息列表和根据市场活动id查询单条记录");
+
+        String id = request.getParameter("id");
+
+        ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        /**
+         * 返回值是什么，需要我们想前端需要什么，然后向service层获取
+         *
+         * uList
+         * activity
+         */
+        Map<String, Object> map = activityService.getUserListAndActivity(id);
+
+        PrintJson.printJsonObj(response, map);
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response) {

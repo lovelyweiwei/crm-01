@@ -19,4 +19,6 @@ public interface ActivityMapper {
     int getTotalByCondition(Map<String, Object> map);
 
     int delete(@Param("ids") String[] ids);
+
+    Activity getById(String id);
 }

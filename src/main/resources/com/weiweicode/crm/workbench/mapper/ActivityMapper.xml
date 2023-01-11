@@ -5,6 +5,10 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ActivityMapper">
 
+    <select id="getById" resultType="activity">
+        select * from tbl_activity where id = #{id}
+    </select>
+
     <delete id="delete">
         delete from tbl_activity
         where id in
