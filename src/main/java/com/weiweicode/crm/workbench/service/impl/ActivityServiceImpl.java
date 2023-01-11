@@ -3,6 +3,7 @@ package com.weiweicode.crm.workbench.service.impl;
 import com.weiweicode.crm.utils.SqlSessionUtil;
 import com.weiweicode.crm.vo.PaginationVO;
 import com.weiweicode.crm.workbench.mapper.ActivityMapper;
+import com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.weiweicode.crm.workbench.pojo.Activity;
 import com.weiweicode.crm.workbench.service.ActivityService;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 public class ActivityServiceImpl implements ActivityService {
 
     private ActivityMapper activityMapper = SqlSessionUtil.getSqlSession().getMapper(ActivityMapper.class);
+    private ActivityRemarkMapper activityRemarkMapper = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkMapper.class);
 
     @Override
     public boolean save(Activity activity) {
@@ -46,5 +48,29 @@ public class ActivityServiceImpl implements ActivityService {
         vo.setDataList(dataList);
 
         return vo;
+    }
+
+    @Override
+    public boolean delete(String[] ids) {
+
+        boolean flag = true;
+
+        //查询需要删除的备注数量
+        int count1 = activityRemarkMapper.getCountByAids(ids);
+
+        //删除备注信息，返回实际删除的数量
+        int count2 = activityRemarkMapper.deleteByAids(ids);
+
+        if (count1 != count2) {
+            flag = false;
+        }
+
+        //删除市场活动
+        int count3 = activityMapper.delete(ids);
+        if (count3 != ids.length) {
+            flag = false;
+        }
+
+        return flag;
     }
 }

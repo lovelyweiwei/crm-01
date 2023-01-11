@@ -159,27 +159,34 @@
 				alert("请选择需要删除的记录")
 			} else {
 
-				//拼接参数
-				var param = ""
+				if (confirm("确认删除所选中记录吗？")) {
 
-				for (var i = 0; i < $xz.length; i++) {
-					param += "id=" + $($xz[i]).val() + "&"
-				}
-				param = param.substr(param.length-1,1)
-				alert(param)
+					//拼接参数
+					var param = ""
 
-				$.ajax({
-					url : "workbench/activity/delete.do",
-					data : {
-
-					},
-					type : "get",
-					dataType : "json",
-					success : function (data) {
-
-
+					for (var i = 0; i < $xz.length; i++) {
+						param += "id=" + $($xz[i]).val() + "&"
 					}
-				})
+					param = param.substr(0, param.length-1)
+					// alert(param)
+
+					$.ajax({
+						url : "workbench/activity/delete.do",
+						data : param,
+						type : "post",
+						dataType : "json",
+						success : function (data) {
+							/*
+                                data  {success:true}
+                             */
+							if (data.success){
+								pageList(1,3)
+							} else {
+								alert("删除市场活动失败")
+							}
+						}
+					})
+				}
 			}
 		})
 

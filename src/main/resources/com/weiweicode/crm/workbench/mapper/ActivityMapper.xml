@@ -5,6 +5,14 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ActivityMapper">
 
+    <delete id="delete">
+        delete from tbl_activity
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="getTotalByCondition" resultType="int">
         select count(*)
         from tbl_activity a

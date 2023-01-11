@@ -5,4 +5,18 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper">
 
+    <select id="getCountByAids" resultType="int">
+        select count(*) from tbl_activity_remark where activityId in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <delete id="deleteByAids">
+        delete from tbl_activity_remark where activityId in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

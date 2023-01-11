@@ -1,6 +1,7 @@
 package com.weiweicode.crm.workbench.mapper;
 
 import com.weiweicode.crm.workbench.pojo.Activity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -16,4 +17,6 @@ public interface ActivityMapper {
     List<Activity> getActivityListByCondition(Map<String, Object> map);
 
     int getTotalByCondition(Map<String, Object> map);
+
+    int delete(@Param("ids") String[] ids);
 }
