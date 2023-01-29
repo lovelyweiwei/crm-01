@@ -7,6 +7,7 @@ import com.weiweicode.crm.vo.PaginationVO;
 import com.weiweicode.crm.workbench.mapper.ActivityMapper;
 import com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.weiweicode.crm.workbench.pojo.Activity;
+import com.weiweicode.crm.workbench.pojo.ActivityRemark;
 import com.weiweicode.crm.workbench.service.ActivityService;
 
 import java.util.HashMap;
@@ -99,6 +100,62 @@ public class ActivityServiceImpl implements ActivityService {
         boolean flag = true;
 
         int count = activityMapper.update(activity);
+        if (count != 1){
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    @Override
+    public Activity detail(String id) {
+
+        Activity activity = activityMapper.detail(id);
+        return activity;
+    }
+
+    @Override
+    public List<ActivityRemark> getRemarkListByAid(String id) {
+
+        List<ActivityRemark> activityRemarks = activityRemarkMapper.getRemarkListByAid(id);
+
+        return activityRemarks;
+    }
+
+    @Override
+    public boolean deleteRemarkByAid(String id) {
+
+        boolean flag = true;
+
+        int count = activityRemarkMapper.deleteByAid(id);
+        if (count != 1){
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    @Override
+    public boolean saveRemark(ActivityRemark ar) {
+
+        boolean flag = true;
+
+        int count = activityRemarkMapper.saveRemark(ar);
+
+        if (count != 1){
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    @Override
+    public boolean updateRemark(ActivityRemark ar) {
+
+        boolean flag = true;
+
+        int count = activityRemarkMapper.updateRemark(ar);
+
         if (count != 1){
             flag = false;
         }

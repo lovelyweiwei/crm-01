@@ -5,6 +5,38 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper">
 
+    <update id="updateRemark">
+        update tbl_activity_remark set noteContent=#{noteContent},editBy=#{editBy},editTime=#{editTime},editFlag=#{editFlag}
+        where id = #{id}
+    </update>
+
+    <insert id="saveRemark">
+        insert into tbl_activity_remark(
+            id,
+            noteContent,
+            createTime,
+            createBy,
+            editFlag,
+            activityId
+        )
+        values(
+            #{id},
+            #{noteContent},
+            #{createTime},
+            #{createBy},
+            #{editFlag},
+            #{activityId}
+        )
+    </insert>
+
+    <delete id="deleteByAid">
+        delete from tbl_activity_remark where id = #{id}
+    </delete>
+
+    <select id="getRemarkListByAid" resultType="activityRemark">
+        select * from tbl_activity_remark where activityId = #{id}
+    </select>
+
     <select id="getCountByAids" resultType="int">
         select count(*) from tbl_activity_remark where activityId in
         <foreach collection="ids" open="(" close=")" separator="," item="id">

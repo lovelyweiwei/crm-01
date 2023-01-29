@@ -2,7 +2,9 @@ package com.weiweicode.crm.workbench.service;
 
 import com.weiweicode.crm.vo.PaginationVO;
 import com.weiweicode.crm.workbench.pojo.Activity;
+import com.weiweicode.crm.workbench.pojo.ActivityRemark;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,4 +22,14 @@ public interface ActivityService {
     Map<String, Object> getUserListAndActivity(String id);
 
     boolean update(Activity activity);
+
+    Activity detail(String id);
+
+    List<ActivityRemark> getRemarkListByAid(String id);
+
+    boolean deleteRemarkByAid(String id);
+
+    boolean saveRemark(ActivityRemark ar);
+
+    boolean updateRemark(ActivityRemark ar);
 }
