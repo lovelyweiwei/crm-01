@@ -4,15 +4,12 @@ import com.weiweicode.crm.settings.pojo.DicValue;
 import com.weiweicode.crm.settings.service.DicService;
 import com.weiweicode.crm.settings.service.impl.DicServiceImpl;
 import com.weiweicode.crm.utils.ServiceFactory;
-import com.weiweicode.crm.workbench.service.impl.ActivityServiceImpl;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author weiwei
@@ -44,6 +41,24 @@ public class SysInitListener implements ServletContextListener {
         for (String key : set){
             application.setAttribute(key, map.get(key));
         }
+
+        //------------------------------------------------
+
+        //处理Stage2Possibility.properties文件
+        System.out.println("服务器缓存处理Stage2Possibility.properties文件");
+
+        Map<String ,String > pMap = new HashMap<>();
+
+        ResourceBundle bundle = ResourceBundle.getBundle("Stage2Possibility");
+        Enumeration<String> e = bundle.getKeys();
+
+        while (e.hasMoreElements()) {
+            String key = e.nextElement();
+            String value = bundle.getString(key);
+            pMap.put(key,value);
+        }
+
+        application.setAttribute("pMap",pMap);
 
     }
 

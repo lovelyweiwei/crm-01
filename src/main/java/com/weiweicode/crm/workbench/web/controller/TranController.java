@@ -5,6 +5,9 @@ import com.weiweicode.crm.settings.service.UserService;
 import com.weiweicode.crm.settings.service.impl.UserServiceImpl;
 import com.weiweicode.crm.utils.PrintJson;
 import com.weiweicode.crm.utils.ServiceFactory;
+import com.weiweicode.crm.workbench.pojo.Customer;
+import com.weiweicode.crm.workbench.service.CustomerService;
+import com.weiweicode.crm.workbench.service.impl.CustomerServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.rmi.ServerError;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
  * @Date 2023/1/31 16:36
  * @Version 1.0
  */
-@WebServlet({"/workbench/transaction/add.do"})
+@WebServlet({"/workbench/transaction/add.do","/workbench/transaction/getCustomerName.do"})
 public class TranController extends HttpServlet{
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -32,9 +34,22 @@ public class TranController extends HttpServlet{
 
         if ("/workbench/transaction/add.do".equals(servletPath)){
             add(request,response);
-        } else if ("/workbench/transaction/save.do".equals(servletPath)){
-           // xx(request,response);
+        } else if ("/workbench/transaction/getCustomerName.do".equals(servletPath)){
+           getCustomerName(request,response);
         }
+    }
+
+    private void getCustomerName(HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("取得客户名称列表（按照客户名称进行模糊查询）");
+
+        String name = request.getParameter("name");
+
+        CustomerService cs = ((CustomerService) ServiceFactory.getService(new CustomerServiceImpl()));
+
+        List<String> customerList = cs.getCustomerName(name);
+
+        PrintJson.printJsonObj(response, customerList);
     }
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
