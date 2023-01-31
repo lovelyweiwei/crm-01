@@ -4,8 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ClueRemarkMapper">
+
+    <delete id="delete">
+        delete from tbl_clue_remark where id=#{id}
+    </delete>
 	
-  	
+  	<select id="getListByClueId" resultType="clueRemark">
+        select * from tbl_clue_remark where clueId=#{clueId}
+    </select>
+
 </mapper>
 
 

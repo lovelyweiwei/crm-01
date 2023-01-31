@@ -9,6 +9,7 @@ import com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.weiweicode.crm.workbench.pojo.Activity;
 import com.weiweicode.crm.workbench.pojo.ActivityRemark;
 import com.weiweicode.crm.workbench.service.ActivityService;
+import jakarta.servlet.RequestDispatcher;
 
 import java.util.HashMap;
 import java.util.List;
@@ -161,5 +162,28 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         return flag;
+    }
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+
+        List<Activity> aList = activityMapper.getActivityListByClueId(clueId);
+
+        return aList;
+    }
+
+    @Override
+    public List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map) {
+
+        List<Activity> aList = activityMapper.getActivityListByNameAndNotByClueId(map);
+
+        return aList;
+    }
+
+    @Override
+    public List<Activity> getActivityListByName(String aname) {
+        List<Activity> aList = activityMapper.getActivityListByName(aname);
+
+        return aList;
     }
 }

@@ -5,7 +5,28 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.TranHistoryMapper">
 	
-  	
+  	<insert id="save">
+        insert into tbl_tran_history(
+            id,
+            stage,
+            money,
+            expectedDate,
+            createTime,
+            createBy,
+            tranId
+
+        )
+        values(
+            #{id},
+            #{stage},
+            #{money},
+            #{expectedDate},
+            #{createTime},
+            #{createBy},
+            #{tranId}
+        )
+    </insert>
+
 </mapper>
 
 

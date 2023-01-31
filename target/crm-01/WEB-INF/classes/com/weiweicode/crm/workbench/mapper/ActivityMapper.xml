@@ -5,6 +5,59 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ActivityMapper">
 
+    <select id="getActivityListByName" resultType="activity">
+        select
+            a.id,
+            a.name,
+            a.startDate,
+            a.endDate,
+            u.name as owner
+
+        from tbl_activity a
+        left join tbl_user u
+        on a.owner=u.id
+
+        where a.name like '%' #{aname} '%'
+    </select>
+
+    <select id="getActivityListByNameAndNotByClueId" resultType="activity">
+        select
+            a.id,
+            a.name,
+            a.startDate,
+            a.endDate,
+            u.name as owner
+
+        from tbl_activity a
+        left join tbl_user u
+        on a.owner=u.id
+
+        where a.name like '%' #{aname} '%' and a.id not in(
+            select
+                activityId
+            from
+                tbl_clue_activity_relation
+            where
+                clueId=#{clueId}
+            )
+
+    </select>
+
+    <select id="getActivityListByClueId" resultType="activity">
+        select
+            car.id,
+            u.name as owner,
+            a.name,
+            a.startDate,
+            a.endDate
+        from tbl_activity a
+        left join tbl_user u
+        on a.owner = u.id
+        left join tbl_clue_activity_relation car
+        on a.id = car.activityId
+        where car.clueId = #{clueId}
+    </select>
+
     <select id="detail" resultType="activity">
         select
             a.id,

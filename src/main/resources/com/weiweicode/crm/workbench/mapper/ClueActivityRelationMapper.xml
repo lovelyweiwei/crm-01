@@ -4,8 +4,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ClueActivityRelationMapper">
+
+    <delete id="delete">
+        delete from tbl_clue_activity_relation where id=#{id}
+    </delete>
+
+    <select id="getListByClueId" resultType="ClueActivityRelation">
+        select * from tbl_clue_activity_relation where clueId=#{clueId}
+    </select>
+
+    <insert id="bund">
+        insert into tbl_clue_activity_relation(
+            id,
+            clueId,
+            activityId
+        )
+        values(
+            #{id},
+            #{clueId},
+            #{activityId}
+        )
+    </insert>
 	
-	
+	<delete id="unbund">
+        delete from tbl_clue_activity_relation where id = #{id}
+    </delete>
   	
 </mapper>
 

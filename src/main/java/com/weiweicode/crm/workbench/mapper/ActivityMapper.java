@@ -1,6 +1,7 @@
 package com.weiweicode.crm.workbench.mapper;
 
 import com.weiweicode.crm.workbench.pojo.Activity;
+import jakarta.servlet.RequestDispatcher;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +26,10 @@ public interface ActivityMapper {
     int update(Activity activity);
 
     Activity detail(String id);
+
+    List<Activity> getActivityListByClueId(String clueId);
+
+    List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map);
+
+    List<Activity> getActivityListByName(String aname);
 }

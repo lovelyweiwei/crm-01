@@ -5,7 +5,25 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.CustomerRemarkMapper">
 	
-  	
+  	<insert id="save">
+        insert into tbl_customer_remark(
+            id,
+            noteContent,
+            createTime,
+            createBy,
+            editFlag,
+            customerId
+        )
+        values(
+            #{id},
+            #{noteContent},
+            #{createTime},
+            #{createBy},
+            #{editFlag},
+            #{customerId}
+        )
+    </insert>
+
 </mapper>
 
 

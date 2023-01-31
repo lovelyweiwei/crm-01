@@ -5,7 +5,19 @@
 
 <mapper namespace="com.weiweicode.crm.workbench.mapper.ContactsActivityRelationMapper">
 	
-  	
+  	<insert id="save">
+        insert into tbl_contacts_activity_relation(
+            id,
+            contactsId,
+            activityId
+        )
+        values(
+            #{id},
+            #{contactsId},
+            #{activityId}
+        )
+    </insert>
+
 </mapper>
 
 
