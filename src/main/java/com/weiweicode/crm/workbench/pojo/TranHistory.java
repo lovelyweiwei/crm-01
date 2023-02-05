@@ -9,7 +9,16 @@ public class TranHistory {
 	private String createTime;
 	private String createBy;
 	private String tranId;
-	
+
+	//扩充可能性（在交易详情页获取交易历史列表需求时使用到该扩充属性
+	private String possibility;
+
+	public String getPossibility() {
+		return possibility;
+	}
+	public void setPossibility(String possibility) {
+		this.possibility = possibility;
+	}
 	public String getId() {
 		return id;
 	}

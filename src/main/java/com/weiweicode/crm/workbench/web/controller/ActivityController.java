@@ -1,6 +1,5 @@
 package com.weiweicode.crm.workbench.web.controller;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import com.weiweicode.crm.settings.pojo.User;
 import com.weiweicode.crm.settings.service.UserService;
 import com.weiweicode.crm.settings.service.impl.UserServiceImpl;
@@ -9,7 +8,6 @@ import com.weiweicode.crm.utils.PrintJson;
 import com.weiweicode.crm.utils.ServiceFactory;
 import com.weiweicode.crm.utils.UUIDUtil;
 import com.weiweicode.crm.vo.PaginationVO;
-import com.weiweicode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.weiweicode.crm.workbench.pojo.Activity;
 import com.weiweicode.crm.workbench.pojo.ActivityRemark;
 import com.weiweicode.crm.workbench.service.ActivityService;

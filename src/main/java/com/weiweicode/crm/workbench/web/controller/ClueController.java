@@ -89,7 +89,7 @@ public class ClueController extends HttpServlet {
             String name = request.getParameter("name");
             String expectedDate = request.getParameter("expectedDate");
             String stage = request.getParameter("stage");
-            String activityId = request.getParameter("ac~tivityId");
+            String activityId = request.getParameter("activityId");
             String id = UUIDUtil.getUUID();
             String createTime = DateTimeUtil.getSysTime();
             createBy = ((User) request.getSession().getAttribute("user")).getName();
